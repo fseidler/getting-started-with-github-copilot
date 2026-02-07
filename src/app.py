@@ -21,6 +21,42 @@ app.mount("/static", StaticFiles(directory=os.path.join(Path(__file__).parent,
 
 # In-memory activity database
 activities = {
+    "Soccer Club": {
+        "description": "Team soccer practice and friendly matches",
+        "schedule": "Tuesdays, 4:00 PM - 5:30 PM",
+        "max_participants": 22,
+        "participants": []
+    },
+    "Basketball Club": {
+        "description": "Basketball drills, teamwork, and games",
+        "schedule": "Thursdays, 4:00 PM - 5:30 PM",
+        "max_participants": 18,
+        "participants": []
+    },
+    "Art Studio": {
+        "description": "Explore drawing, painting, and mixed media projects",
+        "schedule": "Wednesdays, 3:30 PM - 5:00 PM",
+        "max_participants": 16,
+        "participants": []
+    },
+    "Drama Club": {
+        "description": "Acting workshops and stage performances",
+        "schedule": "Mondays, 3:30 PM - 5:00 PM",
+        "max_participants": 20,
+        "participants": []
+    },
+    "Mathletes": {
+        "description": "Problem-solving practice and math competitions",
+        "schedule": "Fridays, 2:30 PM - 4:00 PM",
+        "max_participants": 15,
+        "participants": []
+    },
+    "Science Club": {
+        "description": "Hands-on experiments and science fair prep",
+        "schedule": "Wednesdays, 4:00 PM - 5:30 PM",
+        "max_participants": 18,
+        "participants": []
+    },
     "Chess Club": {
         "description": "Learn strategies and compete in chess tournaments",
         "schedule": "Fridays, 3:30 PM - 5:00 PM",
@@ -61,7 +97,9 @@ def signup_for_activity(activity_name: str, email: str):
 
     # Get the specific activity
     activity = activities[activity_name]
-
+    # Validate student is not already signed up
+    if email in activity["participants"]:
+        raise HTTPException(status_code=400, detail="Student already signed up for this activity")
     # Add student
     activity["participants"].append(email)
     return {"message": f"Signed up {email} for {activity_name}"}
